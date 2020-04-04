@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Supermarket.API.Extensions
+namespace Mwh.Sample.CoreApi.Extensions
 {
     public static class MiddlewareExtensions
     {
@@ -15,13 +15,13 @@ namespace Supermarket.API.Extensions
             {
                 cfg.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Supermarket API",
+                    Title = "Employee API",
                     Version = "v3",
                     Description = "Simple RESTful API built with ASP.NET Core 3.1 to show how to create RESTful services using a decoupled, maintainable architecture.",
                     Contact = new OpenApiContact
                     {
-                        Name = "Evandro Gayer Gomes",
-                        Url = new Uri("https://evandroggomes.com.br/")
+                        Name = "Mark Hazleton",
+                        Url = new Uri("https://linkedin.com/in/markhazleton/")
                     },
                     License = new OpenApiLicense
                     {
@@ -40,8 +40,8 @@ namespace Supermarket.API.Extensions
         {
             app.UseSwagger().UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Supermarket API");
-                options.DocumentTitle = "Supermarket API";
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee API");
+                options.DocumentTitle = "Employee API";
             });
             return app;
         }

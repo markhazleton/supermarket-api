@@ -1,18 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Supermarket.API.Controllers.Config;
-using Supermarket.API.Domain.Repositories;
-using Supermarket.API.Domain.Services;
-using Supermarket.API.Extensions;
-using Supermarket.API.Persistence.Repositories;
-using Supermarket.API.Services;
+using Mwh.Sample.Common.Repositories;
+using Mwh.Sample.CoreApi.Controllers.Config;
+using Mwh.Sample.CoreApi.Extensions;
 
-namespace Supermarket.API
+namespace Mwh.Sample.CoreApi
 {
     public class Startup
     {
@@ -34,7 +29,6 @@ namespace Supermarket.API
             });
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddAutoMapper(typeof(Startup));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

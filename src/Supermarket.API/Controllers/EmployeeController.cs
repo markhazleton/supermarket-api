@@ -1,13 +1,12 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Mwh.Sample.Common.Models;
 using Mwh.Sample.Common.Repositories;
-using Supermarket.API.Domain.Services;
-using Supermarket.API.Resources;
+using Mwh.Sample.CoreApi.Resources;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Supermarket.API.Controllers
+namespace Mwh.Sample.CoreApi.Controllers
 {
     [Route("/api/employees")]
     [Produces("application/json")]
@@ -15,14 +14,10 @@ namespace Supermarket.API.Controllers
     public class EmployeesController : Controller
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IMapper _mapper;
-        private readonly EmployeeMock _emp;
 
-        public EmployeesController(IEmployeeService employeeService, IMapper mapper)
+        public EmployeesController(IEmployeeService employeeService)
         {
-            _emp = new EmployeeMock();
             _employeeService = employeeService;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -33,59 +28,49 @@ namespace Supermarket.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<EmployeeModel>), 200)]
         public async Task<IEnumerable<EmployeeModel>> ListAsync()
         {
-            IEnumerable<EmployeeModel> myReturn;
-
-            myReturn = _emp.EmployeeCollection().ToArray();
-
-            var employees = await _employeeService.ListAsync().ConfigureAwait(true);
-            //var resources = _mapper.Map<IEnumerable<EmployeeModel>, IEnumerable<EmployeeResource>>(employees);
-
-            return myReturn;
+            CancellationTokenSource cts = new CancellationTokenSource();
+            var employees = await _employeeService.ListAsync(cts.Token).ConfigureAwait(true);
+            return employees;
         }
 
         /// <summary>
         /// Saves a new employee.
         /// </summary>
-        /// <param name="resource">Employee data.</param>
+        /// <param name="employee">Employee data.</param>
         /// <returns>Response for the request.</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(EmployeeResource), 201)]
+        [ProducesResponseType(typeof(EmployeeModel), 201)]
         [ProducesResponseType(typeof(ErrorResource), 400)]
-        public async Task<IActionResult> PostAsync([FromBody] SaveEmployeeResource resource)
+        public async Task<IActionResult> PostAsync([FromBody] EmployeeModel employee)
         {
-            var employee = _mapper.Map<SaveEmployeeResource, EmployeeModel>(resource);
-            var result = await _employeeService.SaveAsync(employee);
+            CancellationTokenSource cts = new CancellationTokenSource();
+            var result = await _employeeService.SaveAsync(employee, cts.Token).ConfigureAwait(true);
 
             if (!result.Success)
             {
                 return BadRequest(new ErrorResource(result.Message));
             }
-
-            var employeeResource = _mapper.Map<EmployeeModel, EmployeeResource>(result.Resource);
-            return Ok(employeeResource);
+            return Ok(result);
         }
 
         /// <summary>
         /// Updates an existing employee according to an identifier.
         /// </summary>
         /// <param name="id">Employee identifier.</param>
-        /// <param name="resource">Updated employee data.</param>
+        /// <param name="employee">Updated employee data.</param>
         /// <returns>Response for the request.</returns>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(EmployeeResource), 200)]
+        [ProducesResponseType(typeof(EmployeeModel), 200)]
         [ProducesResponseType(typeof(ErrorResource), 400)]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveEmployeeResource resource)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] EmployeeModel employee)
         {
-            var employee = _mapper.Map<SaveEmployeeResource, EmployeeModel>(resource);
-            var result = await _employeeService.UpdateAsync(id, employee);
-
+            CancellationTokenSource cts = new CancellationTokenSource();
+            var result = await _employeeService.UpdateAsync(id, employee, cts.Token).ConfigureAwait(true);
             if (!result.Success)
             {
                 return BadRequest(new ErrorResource(result.Message));
             }
-
-            var employeeResource = _mapper.Map<EmployeeModel, EmployeeResource>(result.Resource);
-            return Ok(employeeResource);
+            return Ok(result);
         }
 
         /// <summary>
@@ -94,19 +79,18 @@ namespace Supermarket.API.Controllers
         /// <param name="id">Employee identifier.</param>
         /// <returns>Response for the request.</returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(EmployeeResource), 200)]
+        [ProducesResponseType(typeof(EmployeeModel), 200)]
         [ProducesResponseType(typeof(ErrorResource), 400)]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var result = await _employeeService.DeleteAsync(id);
+            CancellationTokenSource cts = new CancellationTokenSource();
+            var result = await _employeeService.DeleteAsync(id, cts.Token).ConfigureAwait(true);
 
             if (!result.Success)
             {
                 return BadRequest(new ErrorResource(result.Message));
             }
-
-            var employeeResource = _mapper.Map<EmployeeModel, EmployeeResource>(result.Resource);
-            return Ok(employeeResource);
+            return Ok(result);
         }
     }
 }

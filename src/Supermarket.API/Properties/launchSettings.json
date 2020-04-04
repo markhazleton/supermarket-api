@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Supermarket.API": {
+    "Mwh.Sample.CoreApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
