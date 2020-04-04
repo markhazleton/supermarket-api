@@ -4,5 +4,6 @@ namespace Supermarket.API.Infrastructure
     {
         CategoriesList,
         ProductsList,
+        EmployeesList,
     }
 }

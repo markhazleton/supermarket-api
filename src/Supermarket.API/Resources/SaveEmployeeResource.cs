@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Supermarket.API.Resources
 {
-    public class SaveCategoryResource
+    public class SaveEmployeeResource
     {
         [Required]
         [MaxLength(30)]

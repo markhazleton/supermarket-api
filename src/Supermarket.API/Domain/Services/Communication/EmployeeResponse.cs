@@ -1,15 +1,15 @@
-using Supermarket.API.Domain.Models;
+using Mwh.Sample.Common.Models;
 
 namespace Supermarket.API.Domain.Services.Communication
 {
-    public class CategoryResponse : BaseResponse<Category>
+    public class EmployeeResponse : BaseResponse<EmployeeModel>
     {
         /// <summary>
         /// Creates a success response.
         /// </summary>
-        /// <param name="category">Saved category.</param>
+        /// <param name="employee">Saved employee.</param>
         /// <returns>Response.</returns>
-        public CategoryResponse(Category category) : base(category)
+        public EmployeeResponse(EmployeeModel employee) : base(employee)
         { }
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace Supermarket.API.Domain.Services.Communication
         /// </summary>
         /// <param name="message">Error message.</param>
         /// <returns>Response.</returns>
-        public CategoryResponse(string message) : base(message)
+        public EmployeeResponse(string message) : base(message)
         { }
     }
 }

@@ -13,9 +13,14 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0-preview.2.20159.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0-preview.2.20159.4" />
+    <PackageReference Include="Mwh.Sample.Common" Version="1.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Contexts\" />
   </ItemGroup>
 
 </Project>

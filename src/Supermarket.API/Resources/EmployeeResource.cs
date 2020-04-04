@@ -1,6 +1,6 @@
 namespace Supermarket.API.Resources
 {
-    public class CategoryResource
+    public class EmployeeResource
     {
         public int Id { get; set; }
         public string Name { get; set; }
