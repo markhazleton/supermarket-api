@@ -1,8 +1,8 @@
 using AutoMapper;
-using Supermarket.API.Domain.Models;
-using Supermarket.API.Domain.Models.Queries;
 using Supermarket.API.Extensions;
 using Supermarket.API.Resources;
+using Supermarket.Domain.Models;
+using Supermarket.Domain.Models.Queries;
 
 namespace Supermarket.API.Mapping
 {

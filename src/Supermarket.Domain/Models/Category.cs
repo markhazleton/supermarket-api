@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Supermarket.API.Domain.Models
+namespace Supermarket.Domain.Models
 {
     public class Category
     {

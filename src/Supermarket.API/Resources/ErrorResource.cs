@@ -16,7 +16,7 @@ namespace Supermarket.API.Resources
         {
             this.Messages = new List<string>();
 
-            if(!string.IsNullOrWhiteSpace(message))
+            if (!string.IsNullOrWhiteSpace(message))
             {
                 this.Messages.Add(message);
             }

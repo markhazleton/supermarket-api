@@ -1,9 +1,9 @@
+using Supermarket.Domain.Models;
+using Supermarket.Domain.Models.Queries;
+using Supermarket.Domain.Services.Communication;
 using System.Threading.Tasks;
-using Supermarket.API.Domain.Models;
-using Supermarket.API.Domain.Models.Queries;
-using Supermarket.API.Domain.Services.Communication;
 
-namespace Supermarket.API.Domain.Services
+namespace Supermarket.Domain.Services
 {
     public interface IProductService
     {

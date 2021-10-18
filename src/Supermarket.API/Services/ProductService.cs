@@ -1,12 +1,12 @@
+using Microsoft.Extensions.Caching.Memory;
+using Supermarket.API.Infrastructure;
+using Supermarket.Domain.Models;
+using Supermarket.Domain.Models.Queries;
+using Supermarket.Domain.Repositories;
+using Supermarket.Domain.Services;
+using Supermarket.Domain.Services.Communication;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
-using Supermarket.API.Domain.Models;
-using Supermarket.API.Domain.Models.Queries;
-using Supermarket.API.Domain.Repositories;
-using Supermarket.API.Domain.Services;
-using Supermarket.API.Domain.Services.Communication;
-using Supermarket.API.Infrastructure;
 
 namespace Supermarket.API.Services
 {
@@ -30,8 +30,9 @@ namespace Supermarket.API.Services
             // Here I list the query result from cache if they exist, but now the data can vary according to the category ID, page and amount of
             // items per page. I have to compose a cache to avoid returning wrong data.
             string cacheKey = GetCacheKeyForProductsQuery(query);
-            
-            var products = await _cache.GetOrCreateAsync(cacheKey, (entry) => {
+
+            var products = await _cache.GetOrCreateAsync(cacheKey, (entry) =>
+            {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
                 return _productRepository.ListAsync(query);
             });
@@ -118,7 +119,7 @@ namespace Supermarket.API.Services
         private string GetCacheKeyForProductsQuery(ProductsQuery query)
         {
             string key = CacheKeys.ProductsList.ToString();
-            
+
             if (query.CategoryId.HasValue && query.CategoryId > 0)
             {
                 key = string.Concat(key, "_", query.CategoryId.Value);

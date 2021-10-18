@@ -17,11 +17,11 @@ namespace Supermarket.API.Extensions
                 {
                     Title = "Supermarket API",
                     Version = "v3",
-                    Description = "Simple RESTful API built with ASP.NET Core 3.1 to show how to create RESTful services using a decoupled, maintainable architecture.",
+                    Description = "Simple RESTful API built with ASP.NET 5.0 to show how to create RESTful services using a decoupled, maintainable architecture.",
                     Contact = new OpenApiContact
                     {
-                        Name = "Evandro Gayer Gomes",
-                        Url = new Uri("https://evandroggomes.com.br/")
+                        Name = "Mark Hazleton",
+                        Url = new Uri("https://controlorigins.com/mark-hazleton.html")
                     },
                     License = new OpenApiLicense
                     {

@@ -1,7 +1,7 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Supermarket.API.Extensions;
 using Supermarket.API.Resources;
+using System.Linq;
 
 namespace Supermarket.API.Controllers.Config
 {
@@ -11,7 +11,7 @@ namespace Supermarket.API.Controllers.Config
         {
             var errors = context.ModelState.GetErrorMessages();
             var response = new ErrorResource(messages: errors);
-            
+
             return new BadRequestObjectResult(response);
         }
     }

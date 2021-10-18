@@ -9,6 +9,12 @@ namespace Supermarket.API
 #pragma warning disable CS1591
     public class Program
     {
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -21,13 +27,6 @@ namespace Supermarket.API
 
             host.Run();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
     }
 #pragma warning restore CS1591
 }

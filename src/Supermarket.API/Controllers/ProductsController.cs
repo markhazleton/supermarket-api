@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Supermarket.API.Domain.Models;
-using Supermarket.API.Domain.Models.Queries;
-using Supermarket.API.Domain.Services;
 using Supermarket.API.Resources;
+using Supermarket.Domain.Models;
+using Supermarket.Domain.Models.Queries;
+using Supermarket.Domain.Services;
+using System.Threading.Tasks;
 
 namespace Supermarket.API.Controllers
 {
@@ -14,13 +13,34 @@ namespace Supermarket.API.Controllers
     [ApiController]
     public class ProductsController : Controller
     {
-        private readonly IProductService _productService;
         private readonly IMapper _mapper;
+        private readonly IProductService _productService;
 
         public ProductsController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
             _mapper = mapper;
+        }
+
+        /// <summary>
+        /// Deletes a given product according to an identifier.
+        /// </summary>
+        /// <param name="id">Product identifier.</param>
+        /// <returns>Response for the request.</returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(ProductResource), 200)]
+        [ProducesResponseType(typeof(ErrorResource), 400)]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _productService.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                return BadRequest(new ErrorResource(result.Message));
+            }
+
+            var categoryResource = _mapper.Map<Product, ProductResource>(result.Resource);
+            return Ok(categoryResource);
         }
 
         /// <summary>
@@ -81,27 +101,6 @@ namespace Supermarket.API.Controllers
 
             var productResource = _mapper.Map<Product, ProductResource>(result.Resource);
             return Ok(productResource);
-        }
-
-        /// <summary>
-        /// Deletes a given product according to an identifier.
-        /// </summary>
-        /// <param name="id">Product identifier.</param>
-        /// <returns>Response for the request.</returns>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(ProductResource), 200)]
-        [ProducesResponseType(typeof(ErrorResource), 400)]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var result = await _productService.DeleteAsync(id);
-
-            if (!result.Success)
-            {
-                return BadRequest(new ErrorResource(result.Message));
-            }
-
-            var categoryResource = _mapper.Map<Product, ProductResource>(result.Resource);
-            return Ok(categoryResource);
         }
     }
 }

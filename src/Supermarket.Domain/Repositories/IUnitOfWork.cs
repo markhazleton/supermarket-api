@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 
-namespace Supermarket.API.Domain.Repositories
+namespace Supermarket.Domain.Repositories
 {
     public interface IUnitOfWork
     {
-         Task CompleteAsync();
+        Task CompleteAsync();
     }
 }

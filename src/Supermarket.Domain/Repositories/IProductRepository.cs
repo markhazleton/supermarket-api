@@ -1,9 +1,8 @@
-using System.Collections.Generic;
+using Supermarket.Domain.Models;
+using Supermarket.Domain.Models.Queries;
 using System.Threading.Tasks;
-using Supermarket.API.Domain.Models;
-using Supermarket.API.Domain.Models.Queries;
 
-namespace Supermarket.API.Domain.Repositories
+namespace Supermarket.Domain.Repositories
 {
     public interface IProductRepository
     {
