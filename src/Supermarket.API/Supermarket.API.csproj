@@ -7,7 +7,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Supermarket.API.xml</DocumentationFile>
-    <OutputPath>bin\Debug\netcoreapp3.1\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <NoWarn>1701;1702;1591;</NoWarn>
   </PropertyGroup>
 
