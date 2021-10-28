@@ -7,26 +7,26 @@ namespace Supermarket.API
 {
 
 #pragma warning disable CS1591
-    public class Program
-    {
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-        public static void Main(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
+	public class Program
+	{
+		public static IHostBuilder CreateHostBuilder(string[] args) =>
+			Host.CreateDefaultBuilder(args)
+				.ConfigureWebHostDefaults(webBuilder =>
+				{
+					webBuilder.UseStartup<Startup>();
+				});
+		public static void Main(string[] args)
+		{
+			var host = CreateHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            using (var context = scope.ServiceProvider.GetService<AppDbContext>())
-            {
-                context.Database.EnsureCreated();
-            }
+			using (var scope = host.Services.CreateScope())
+			using (var context = scope.ServiceProvider.GetService<AppDbContext>())
+			{
+				context.Database.EnsureCreated();
+			}
 
-            host.Run();
-        }
-    }
+			host.Run();
+		}
+	}
 #pragma warning restore CS1591
 }
