@@ -1,12 +1,13 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Supermarket.Domain.Models;
 
 namespace Supermarket.API.Persistence.Contexts
 {
-    public class AppDbContext : DbContext
-    {
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
+	public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+	{
+		public DbSet<Category> Categories { get; set; }
+		public DbSet<Product> Products { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

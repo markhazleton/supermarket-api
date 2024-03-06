@@ -1,20 +1,18 @@
-using System.Collections.Generic;
-
 namespace Supermarket.API.Resources
 {
-    public class ErrorResource
+    public record ErrorResource
     {
         public bool Success => false;
         public List<string> Messages { get; private set; }
 
         public ErrorResource(List<string> messages)
         {
-            this.Messages = messages ?? new List<string>();
+            Messages = messages ?? [];
         }
 
         public ErrorResource(string message)
         {
-            this.Messages = new List<string>();
+            Messages = [];
 
             if (!string.IsNullOrWhiteSpace(message))
             {

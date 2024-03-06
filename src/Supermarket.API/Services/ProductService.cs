@@ -1,12 +1,8 @@
 using Microsoft.Extensions.Caching.Memory;
+using Supermarket.API.Domain.Repositories;
+using Supermarket.API.Domain.Services;
+using Supermarket.API.Domain.Services.Communication;
 using Supermarket.API.Infrastructure;
-using Supermarket.Domain.Models;
-using Supermarket.Domain.Models.Queries;
-using Supermarket.Domain.Repositories;
-using Supermarket.Domain.Services;
-using Supermarket.Domain.Services.Communication;
-using System;
-using System.Threading.Tasks;
 
 namespace Supermarket.API.Services
 {
@@ -16,13 +12,22 @@ namespace Supermarket.API.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMemoryCache _cache;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork, IMemoryCache cache)
+        public ProductService
+        (
+            IProductRepository productRepository,
+            ICategoryRepository categoryRepository,
+            IUnitOfWork unitOfWork,
+            IMemoryCache cache,
+            ILogger<ProductService> logger
+        )
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
             _cache = cache;
+            _logger = logger;
         }
 
         public async Task<QueryResult<Product>> ListAsync(ProductsQuery query)
@@ -37,10 +42,10 @@ namespace Supermarket.API.Services
                 return _productRepository.ListAsync(query);
             });
 
-            return products;
+            return products!;
         }
 
-        public async Task<ProductResponse> SaveAsync(Product product)
+        public async Task<Response<Product>> SaveAsync(Product product)
         {
             try
             {
@@ -51,30 +56,30 @@ namespace Supermarket.API.Services
                 */
                 var existingCategory = await _categoryRepository.FindByIdAsync(product.CategoryId);
                 if (existingCategory == null)
-                    return new ProductResponse("Invalid category.");
+                    return new Response<Product>("Invalid category.");
 
                 await _productRepository.AddAsync(product);
                 await _unitOfWork.CompleteAsync();
 
-                return new ProductResponse(product);
+                return new Response<Product>(product);
             }
             catch (Exception ex)
             {
-                // Do some logging stuff
-                return new ProductResponse($"An error occurred when saving the product: {ex.Message}");
+                _logger.LogError(ex, "Could not save product.");
+                return new Response<Product>($"An error occurred when saving the product: {ex.Message}");
             }
         }
 
-        public async Task<ProductResponse> UpdateAsync(int id, Product product)
+        public async Task<Response<Product>> UpdateAsync(int id, Product product)
         {
             var existingProduct = await _productRepository.FindByIdAsync(id);
 
             if (existingProduct == null)
-                return new ProductResponse("Product not found.");
+                return new Response<Product>("Product not found.");
 
             var existingCategory = await _categoryRepository.FindByIdAsync(product.CategoryId);
             if (existingCategory == null)
-                return new ProductResponse("Invalid category.");
+                return new Response<Product>("Invalid category.");
 
             existingProduct.Name = product.Name;
             existingProduct.UnitOfMeasurement = product.UnitOfMeasurement;
@@ -86,47 +91,37 @@ namespace Supermarket.API.Services
                 _productRepository.Update(existingProduct);
                 await _unitOfWork.CompleteAsync();
 
-                return new ProductResponse(existingProduct);
+                return new Response<Product>(existingProduct);
             }
             catch (Exception ex)
             {
-                // Do some logging stuff
-                return new ProductResponse($"An error occurred when updating the product: {ex.Message}");
+                _logger.LogError(ex, "Could not update product with ID {id}.", id);
+                return new Response<Product>($"An error occurred when updating the product: {ex.Message}");
             }
         }
 
-        public async Task<ProductResponse> DeleteAsync(int id)
+        public async Task<Response<Product>> DeleteAsync(int id)
         {
             var existingProduct = await _productRepository.FindByIdAsync(id);
 
             if (existingProduct == null)
-                return new ProductResponse("Product not found.");
+                return new Response<Product>("Product not found.");
 
             try
             {
                 _productRepository.Remove(existingProduct);
                 await _unitOfWork.CompleteAsync();
 
-                return new ProductResponse(existingProduct);
+                return new Response<Product>(existingProduct);
             }
             catch (Exception ex)
             {
-                // Do some logging stuff
-                return new ProductResponse($"An error occurred when deleting the product: {ex.Message}");
+                _logger.LogError(ex, "Could not delete product with ID {id}.", id);
+                return new Response<Product>($"An error occurred when deleting the product: {ex.Message}");
             }
         }
 
-        private string GetCacheKeyForProductsQuery(ProductsQuery query)
-        {
-            string key = CacheKeys.ProductsList.ToString();
-
-            if (query.CategoryId.HasValue && query.CategoryId > 0)
-            {
-                key = string.Concat(key, "_", query.CategoryId.Value);
-            }
-
-            key = string.Concat(key, "_", query.Page, "_", query.ItemsPerPage);
-            return key;
-        }
+        private static string GetCacheKeyForProductsQuery(ProductsQuery query)
+            => $"{CacheKeys.ProductsList}_{query.CategoryId}_{query.Page}_{query.ItemsPerPage}";
     }
 }

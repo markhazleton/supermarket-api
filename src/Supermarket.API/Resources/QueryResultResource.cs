@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-
 namespace Supermarket.API.Resources
 {
-    public class QueryResultResource<T>
-    {
-        public int TotalItems { get; set; } = 0;
-        public List<T> Items { get; set; } = new List<T>();
-    }
+	public record QueryResultResource<T>
+	{
+		public required int TotalItems { get; init; } = 0;
+        public required List<T> Items { get; init; } = [];
+	}
 }

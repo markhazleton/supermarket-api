@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Supermarket.API.Domain.Services;
 using Supermarket.API.Resources;
 using Supermarket.Domain.Models;
 using Supermarket.Domain.Models.Queries;
@@ -8,10 +9,7 @@ using System.Threading.Tasks;
 
 namespace Supermarket.API.Controllers
 {
-    [Route("/api/products")]
-    [Produces("application/json")]
-    [ApiController]
-    public class ProductsController : Controller
+    public class ProductsController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
@@ -20,6 +18,65 @@ namespace Supermarket.API.Controllers
         {
             _productService = productService;
             _mapper = mapper;
+        }
+
+        /// <summary>
+        /// Lists all existing products.
+        /// </summary>
+        /// <returns>List of products.</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(QueryResultResource<ProductResource>), 200)]
+        public async Task<QueryResultResource<ProductResource>> ListAsync([FromQuery] ProductsQueryResource query)
+        {
+            var productsQuery = _mapper.Map<ProductsQuery>(query);
+            var queryResult = await _productService.ListAsync(productsQuery);
+
+            return _mapper.Map<QueryResultResource<ProductResource>>(queryResult);
+        }
+
+        /// <summary>
+        /// Saves a new product.
+        /// </summary>
+        /// <param name="resource">Product data.</param>
+        /// <returns>Response for the request.</returns>
+        [HttpPost]
+        [ProducesResponseType(typeof(ProductResource), 201)]
+        [ProducesResponseType(typeof(ErrorResource), 400)]
+        public async Task<IActionResult> PostAsync([FromBody] SaveProductResource resource)
+        {
+            var product = _mapper.Map<Product>(resource);
+            var result = await _productService.SaveAsync(product);
+
+            if (!result.Success)
+            {
+                return BadRequest(new ErrorResource(result.Message!));
+            }
+
+            var productResource = _mapper.Map<ProductResource>(result.Resource!);
+            return Ok(productResource);
+        }
+
+        /// <summary>
+        /// Updates an existing product according to an identifier.
+        /// </summary>
+        /// <param name="id">Product identifier.</param>
+        /// <param name="resource">Product data.</param>
+        /// <returns>Response for the request.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ProductResource), 201)]
+        [ProducesResponseType(typeof(ErrorResource), 400)]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveProductResource resource)
+        {
+            var product = _mapper.Map<Product>(resource);
+            var result = await _productService.UpdateAsync(id, product);
+
+            if (!result.Success)
+            {
+                return BadRequest(new ErrorResource(result.Message!));
+            }
+
+            var productResource = _mapper.Map<ProductResource>(result.Resource!);
+            return Ok(productResource);
         }
 
         /// <summary>
@@ -36,71 +93,11 @@ namespace Supermarket.API.Controllers
 
             if (!result.Success)
             {
-                return BadRequest(new ErrorResource(result.Message));
+                return BadRequest(new ErrorResource(result.Message!));
             }
 
-            var categoryResource = _mapper.Map<Product, ProductResource>(result.Resource);
+            var categoryResource = _mapper.Map<ProductResource>(result.Resource!);
             return Ok(categoryResource);
-        }
-
-        /// <summary>
-        /// Lists all existing products.
-        /// </summary>
-        /// <returns>List of products.</returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(QueryResultResource<ProductResource>), 200)]
-        public async Task<QueryResultResource<ProductResource>> ListAsync([FromQuery] ProductsQueryResource query)
-        {
-            var productsQuery = _mapper.Map<ProductsQueryResource, ProductsQuery>(query);
-            var queryResult = await _productService.ListAsync(productsQuery);
-
-            var resource = _mapper.Map<QueryResult<Product>, QueryResultResource<ProductResource>>(queryResult);
-            return resource;
-        }
-
-        /// <summary>
-        /// Saves a new product.
-        /// </summary>
-        /// <param name="resource">Product data.</param>
-        /// <returns>Response for the request.</returns>
-        [HttpPost]
-        [ProducesResponseType(typeof(ProductResource), 201)]
-        [ProducesResponseType(typeof(ErrorResource), 400)]
-        public async Task<IActionResult> PostAsync([FromBody] SaveProductResource resource)
-        {
-            var product = _mapper.Map<SaveProductResource, Product>(resource);
-            var result = await _productService.SaveAsync(product);
-
-            if (!result.Success)
-            {
-                return BadRequest(new ErrorResource(result.Message));
-            }
-
-            var productResource = _mapper.Map<Product, ProductResource>(result.Resource);
-            return Ok(productResource);
-        }
-
-        /// <summary>
-        /// Updates an existing product according to an identifier.
-        /// </summary>
-        /// <param name="id">Product identifier.</param>
-        /// <param name="resource">Product data.</param>
-        /// <returns>Response for the request.</returns>
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ProductResource), 201)]
-        [ProducesResponseType(typeof(ErrorResource), 400)]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveProductResource resource)
-        {
-            var product = _mapper.Map<SaveProductResource, Product>(resource);
-            var result = await _productService.UpdateAsync(id, product);
-
-            if (!result.Success)
-            {
-                return BadRequest(new ErrorResource(result.Message));
-            }
-
-            var productResource = _mapper.Map<Product, ProductResource>(result.Resource);
-            return Ok(productResource);
         }
     }
 }

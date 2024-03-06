@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
+﻿using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace Supermarket.API.Extensions
@@ -16,8 +12,8 @@ namespace Supermarket.API.Extensions
                 cfg.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Supermarket API",
-                    Version = "v3",
-                    Description = "Simple RESTful API built with ASP.NET 5.0 to show how to create RESTful services using a decoupled, maintainable architecture.",
+                    Version = "v5",
+                    Description = "Simple RESTful API built with ASP.NET Core to show how to create RESTful services using a service-oriented architecture.",
                     Contact = new OpenApiContact
                     {
                         Name = "Mark Hazleton",

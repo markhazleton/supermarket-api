@@ -1,11 +1,11 @@
 namespace Supermarket.API.Resources
 {
-    public class ProductResource
+    public record ProductResource
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int QuantityInPackage { get; set; }
-        public string UnitOfMeasurement { get; set; }
-        public CategoryResource Category { get; set; }
+        public required int Id { get; init; }
+        public required string Name { get; init; }
+        public required int QuantityInPackage { get; init; }
+        public required string UnitOfMeasurement { get; init; }
+        public CategoryResource? Category { get; init; }
     }
 }

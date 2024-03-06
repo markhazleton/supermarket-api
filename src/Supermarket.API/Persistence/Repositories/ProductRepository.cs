@@ -1,18 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Supermarket.API.Domain.Repositories;
 using Supermarket.API.Persistence.Contexts;
-using Supermarket.Domain.Models;
-using Supermarket.Domain.Models.Queries;
-using Supermarket.Domain.Repositories;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Supermarket.API.Persistence.Repositories
 {
-    public class ProductRepository : BaseRepository, IProductRepository
+    public class ProductRepository(AppDbContext context) : BaseRepository(context), IProductRepository
     {
-        public ProductRepository(AppDbContext context) : base(context) { }
-
         public async Task<QueryResult<Product>> ListAsync(ProductsQuery query)
         {
             IQueryable<Product> queryable = _context.Products
@@ -43,17 +36,11 @@ namespace Supermarket.API.Persistence.Repositories
             };
         }
 
-        public async Task<Product> FindByIdAsync(int id)
-        {
-            return await _context.Products
-                                 .Include(p => p.Category)
-                                 .FirstOrDefaultAsync(p => p.Id == id); // Since Include changes the method's return type, we can't use FindAsync
-        }
+        public async Task<Product?> FindByIdAsync(int id)
+            => await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id); // Since Include changes the method's return type, we can't use FindAsync
 
         public async Task AddAsync(Product product)
-        {
-            await _context.Products.AddAsync(product);
-        }
+            => await _context.Products.AddAsync(product);
 
         public void Update(Product product)
         {
