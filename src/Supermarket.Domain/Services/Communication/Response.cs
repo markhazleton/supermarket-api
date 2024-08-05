@@ -13,7 +13,7 @@ public record Response<T>
         Resource = resource;
     }
 
-		public Response(string message)
+    public Response(string message)
     {
         Success = false;
         Message = message;

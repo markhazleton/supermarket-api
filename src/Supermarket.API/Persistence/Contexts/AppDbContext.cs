@@ -4,9 +4,9 @@ using Supermarket.Domain.Models;
 namespace Supermarket.API.Persistence.Contexts;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
-	{
-		public DbSet<Supermarket.Domain.Models.Category> Categories { get; set; }
-		public DbSet<Product> Products { get; set; }
+{
+    public DbSet<Supermarket.Domain.Models.Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

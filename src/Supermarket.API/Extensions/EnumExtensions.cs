@@ -6,7 +6,7 @@ namespace Supermarket.API.Extensions
     {
         public static string ToDescriptionString<TEnum>(this TEnum? value) where TEnum : Enum
         {
-            if(value == null)
+            if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
             }

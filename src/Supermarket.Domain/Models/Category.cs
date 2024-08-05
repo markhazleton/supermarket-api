@@ -2,7 +2,7 @@ namespace Supermarket.Domain.Models;
 
 public class Category
 {
-	public int Id { get; set; }
-	public string Name { get; set; } = null!;
-	public List<Product> Products { get; set; } = [];
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public List<Product> Products { get; set; } = [];
 }

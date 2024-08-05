@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Supermarket.Domain.Models.Queries
 {
     public class QueryResult<T>
