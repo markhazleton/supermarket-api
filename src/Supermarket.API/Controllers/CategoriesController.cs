@@ -1,20 +1,15 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Supermarket.API.Domain.Services;
 using Supermarket.API.Resources;
-using Supermarket.Domain.Models;
-using Supermarket.Domain.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Supermarket.API.Controllers
 {
-	public class CategoriesController : BaseApiController
+    public class CategoriesController : BaseApiController
 	{
-		private readonly ICategoryService _categoryService;
+		private readonly Domain.Services.ICategoryService _categoryService;
 		private readonly IMapper _mapper;
 
-		public CategoriesController(ICategoryService categoryService, IMapper mapper)
+		public CategoriesController(Domain.Services.ICategoryService categoryService, IMapper mapper)
 		{
 			_categoryService = categoryService;
 			_mapper = mapper;
@@ -42,7 +37,7 @@ namespace Supermarket.API.Controllers
 		[ProducesResponseType(typeof(ErrorResource), 400)]
 		public async Task<IActionResult> PostAsync([FromBody] SaveCategoryResource resource)
 		{
-			var category = _mapper.Map<Category>(resource);
+			var category = _mapper.Map<Supermarket.Domain.Models.Category>(resource);
 			var result = await _categoryService.SaveAsync(category);
 
 			if (!result.Success)
@@ -65,7 +60,7 @@ namespace Supermarket.API.Controllers
 		[ProducesResponseType(typeof(ErrorResource), 400)]
 		public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCategoryResource resource)
 		{
-			var category = _mapper.Map<Category>(resource);
+			var category = _mapper.Map<Supermarket.Domain.Models.Category>(resource);
 			var result = await _categoryService.UpdateAsync(id, category);
 
 			if (!result.Success)

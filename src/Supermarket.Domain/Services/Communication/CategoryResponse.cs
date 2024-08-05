@@ -1,15 +1,15 @@
-using Supermarket.Domain.Models;
+
 
 namespace Supermarket.Domain.Services.Communication
 {
-    public class CategoryResponse : BaseResponse<Category>
+    public class CategoryResponse : BaseResponse<Models.Category>
     {
         /// <summary>
         /// Creates a success response.
         /// </summary>
         /// <param name="category">Saved category.</param>
         /// <returns>Response.</returns>
-        public CategoryResponse(Category category) : base(category)
+        public CategoryResponse(Models.Category category) : base(category)
         { }
 
         /// <summary>

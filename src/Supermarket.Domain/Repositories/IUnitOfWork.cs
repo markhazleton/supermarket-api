@@ -1,7 +1,6 @@
-namespace Supermarket.API.Domain.Repositories
+namespace Supermarket.Domain.Repositories;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        Task CompleteAsync();
-    }
+    Task CompleteAsync();
 }

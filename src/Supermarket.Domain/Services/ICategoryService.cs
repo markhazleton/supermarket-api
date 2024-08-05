@@ -1,15 +1,12 @@
 using Supermarket.Domain.Models;
 using Supermarket.Domain.Services.Communication;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Supermarket.Domain.Services
+namespace Supermarket.Domain.Services;
+
+public interface ICategoryService
 {
-    public interface ICategoryService
-    {
-        Task<IEnumerable<Category>> ListAsync();
-        Task<CategoryResponse> SaveAsync(Category category);
-        Task<CategoryResponse> UpdateAsync(int id, Category category);
-        Task<CategoryResponse> DeleteAsync(int id);
-    }
+     Task<IEnumerable<Category>> ListAsync();
+     Task<Response<Category>> SaveAsync(Category category);
+     Task<Response<Category>> UpdateAsync(int id, Category category);
+     Task<Response<Category>> DeleteAsync(int id);
 }

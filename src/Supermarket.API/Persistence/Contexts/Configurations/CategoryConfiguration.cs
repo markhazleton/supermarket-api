@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Supermarket.API.Persistence.Contexts.Configurations
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    public class CategoryConfiguration : IEntityTypeConfiguration<Supermarket.Domain.Models.Category>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<Supermarket.Domain.Models.Category> builder)
         {
             builder.ToTable("Categories");
             builder.HasKey(p => p.Id);

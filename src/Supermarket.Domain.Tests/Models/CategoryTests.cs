@@ -1,21 +1,20 @@
-﻿using Supermarket.Domain.Models;
+﻿
 
-namespace Supermarket.Domain.Tests.Models
+namespace Supermarket.Domain.Tests.Models;
+
+[TestClass]
+public class CategoryTests
 {
-    [TestClass]
-    public class CategoryTests
+    [TestMethod]
+    public void TestMethod1()
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-            // Arrange
-            var category = new Category();
+        // Arrange
+        var category = new Domain.Models.Category();
 
-            // Act
+        // Act
 
 
-            // Assert
-            Assert.IsNotNull(category);
-        }
+        // Assert
+        Assert.IsNotNull(category);
     }
 }

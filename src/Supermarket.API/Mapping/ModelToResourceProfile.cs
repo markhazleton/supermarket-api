@@ -10,7 +10,7 @@ namespace Supermarket.API.Mapping
     {
         public ModelToResourceProfile()
         {
-            CreateMap<Category, CategoryResource>();
+            CreateMap<Supermarket.Domain.Models.Category, CategoryResource>();
 
             CreateMap<Product, ProductResource>()
                 .ForMember(src => src.UnitOfMeasurement,

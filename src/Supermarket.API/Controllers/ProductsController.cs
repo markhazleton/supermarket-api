@@ -1,11 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Supermarket.API.Domain.Services;
 using Supermarket.API.Resources;
 using Supermarket.Domain.Models;
 using Supermarket.Domain.Models.Queries;
 using Supermarket.Domain.Services;
-using System.Threading.Tasks;
 
 namespace Supermarket.API.Controllers
 {

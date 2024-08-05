@@ -17,7 +17,7 @@ namespace Supermarket.API.Extensions
                     Contact = new OpenApiContact
                     {
                         Name = "Mark Hazleton",
-                        Url = new Uri("https://markhazleton.controlorigins.com")
+                        Url = new Uri("https://markhazleton.com")
                     },
                     License = new OpenApiLicense
                     {

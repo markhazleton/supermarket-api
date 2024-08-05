@@ -1,37 +1,38 @@
-namespace Supermarket.API.Persistence.Contexts
+using Supermarket.Domain.Models;
+
+namespace Supermarket.API.Persistence.Contexts;
+
+public static class SeedData
 {
-    public static class SeedData
+    public static async Task Seed(AppDbContext context)
     {
-        public static async Task Seed(AppDbContext context)
+        var products = new List<Product>
         {
-            var products = new List<Product>
-            {
-                new() {
-                    Id = 100,
-                    Name = "Apple",
-                    QuantityInPackage = 1,
-                    UnitOfMeasurement = UnitOfMeasurement.Unity,
-                    CategoryId = 100
-                },
-                new() {
-                    Id = 101,
-                    Name = "Milk",
-                    QuantityInPackage = 2,
-                    UnitOfMeasurement = UnitOfMeasurement.Liter,
-                    CategoryId = 101,
-                }
-            };
+            new() {
+                Id = 100,
+                Name = "Apple",
+                QuantityInPackage = 1,
+                UnitOfMeasurement = EUnitOfMeasurement.Unity,
+                CategoryId = 100
+            },
+            new() {
+                Id = 101,
+                Name = "Milk",
+                QuantityInPackage = 2,
+                UnitOfMeasurement = EUnitOfMeasurement.Liter,
+                CategoryId = 101,
+            }
+        };
 
-            var categories = new List<Category>
-            {
-                new() { Id = 100, Name = "Fruits and Vegetables" }, // Id set manually due to in-memory provider
-                new() { Id = 101, Name = "Dairy" }
-            };
+        var categories = new List<Category>
+        {
+            new() { Id = 100, Name = "Fruits and Vegetables" }, // Id set manually due to in-memory provider
+            new() { Id = 101, Name = "Dairy" }
+        };
 
-            context.Products.AddRange(products);
-            context.Categories.AddRange(categories);
+        context.Products.AddRange(products);
+        context.Categories.AddRange(categories);
 
-            await context.SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
     }
 }
